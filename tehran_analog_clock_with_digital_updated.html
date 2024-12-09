@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ساعت آنالوگ تهران - با تغییرات</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+      background-color: #f9f9f9;
+      font-family: "Arial", sans-serif;
+      color: #333;
+      text-align: right;
+      line-height: 1.8;
+      direction: rtl;
+    }
+
+    .clock {
+      position: relative;
+      width: 250px;
+      height: 250px;
+      border: 10px solid #333;
+      border-radius: 50%;
+      background: white;
+      margin-bottom: 10px;
+      transform: rotate(-45deg); /* Rotating the entire clock 45 degrees to the left */
+    }
+
+    .clock .center {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      background: #333;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+    }
+
+    .hand {
+      position: absolute;
+      width: 50%;
+      height: 2px;
+      background: #333;
+      top: 50%;
+      left: 50%;
+      transform-origin: 0% 50%;
+      transform: rotate(90deg);
+      transition: transform 0.1s ease-in-out;
+    }
+
+    .hand.second {
+      width: 45%;
+      height: 2px;
+      background: orange; /* Changing the color of the second hand to orange */
+    }
+
+    .description-container {
+      max-width: 800px;
+      padding: 20px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+    }
+
+    .description-container h1 {
+      font-size: 20px;
+      color: #444;
+      text-align: right;
+      margin-bottom: 20px;
+    }
+
+    .description-container p {
+      margin: 15px 0;
+    }
+
+    .description-container ul {
+      margin: 10px 0;
+      padding-right: 20px;
+    }
+
+    .description-container li {
+      margin-bottom: 10px;
+    }
+
+    .digital-clock {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #444;
+      text-align: center;
+    }
+
+    .footer {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #555;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="clock">
+    <div class="center"></div>
+    <div class="hand second" id="secondHand"></div>
+  </div>
+
+  <div class="description-container">
+    <h1>اکنون: ساعتی برای ستایش زندگی و توجه به لحظه حال</h1>
+    <p>اکنون، همان زمانی است که باید تمرکز کنی، بیندیشی، تصمیم بگیری و رشد کنی. این لحظه، همین "اکنون" است.</p>
+    <p>به ساعت نگاه کن. اینجا به چهار بعد اساسی درک جهان اشاره شده است:</p>
+    <ul>
+      <li>سه بُعد مکانی: طول، عرض و ارتفاع.</li>
+      <li>بعد زمانی: زمان به‌عنوان چهارمین بُعد، امکان ردیابی تغییرات و حرکت را در چارچوب سه بُعد مکانی فراهم می‌کند.</li>
+    </ul>
+    <p>در نظریه نسبیت خاص و عام آلبرت انیشتین، فضا و زمان به‌صورت یکپارچه به‌عنوان فضازمان چهاربُعدی توصیف می‌شوند:</p>
+    <ul>
+      <li>سه بُعد مکانی (طول، عرض، ارتفاع): ابعادی که در زندگی روزمره مشاهده می‌کنیم.</li>
+      <li>بُعد زمانی (زمان): زمانی که در نظریه انیشتین به‌عنوان یک بُعد واقعی و وابسته به ابعاد مکانی تعریف می‌شود.</li>
+    </ul>
+    <p>چهار فصل طبیعت نیز در این مفهوم نهفته است: بهار، تابستان، پاییز و زمستان.</p>
+    <p><strong>اکنون را دریاب؛ لحظه‌ای که در آن زندگی جریان دارد.</strong></p>
+  </div>
+
+  <div class="digital-clock" id="digitalClock"></div>
+
+  <div class="footer">
+    خانه اندیشه ورزان - طراح مهدی نورقربانی
+  </div>
+
+  <script>
+    function setClock() {
+      const now = new Date();
+      
+      // Adjusting Tehran timezone manually
+      const tehranOffset = 3.5 * 60 * 60 * 1000; // Tehran offset in milliseconds
+      const utcTime = now.getTime() + now.getTimezoneOffset() * 60 * 1000; // UTC time in milliseconds
+      const tehranTime = new Date(utcTime + tehranOffset);
+
+      const seconds = tehranTime.getSeconds();
+      const secondDeg = (seconds / 60) * 360;
+
+      const secondHand = document.getElementById("secondHand");
+      secondHand.style.transform = `rotate(${secondDeg}deg)`;
+
+      // Keeping digital clock but removing text
+      const hours = tehranTime.getHours().toString().padStart(2, '0');
+      const minutes = tehranTime.getMinutes().toString().padStart(2, '0');
+      const secs = tehranTime.getSeconds().toString().padStart(2, '0');
+      document.getElementById("digitalClock").innerText = `${hours}:${minutes}:${secs}`;
+    }
+
+    setInterval(setClock, 1000);
+    setClock(); // Initialize immediately on load
+  </script>
+</body>
+</html>
